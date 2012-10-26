@@ -25,13 +25,14 @@ using namespace std;
 
 /*
  * Note that the origin is in the LOWER LEFT corner, unlike in previous assignments.
- */
+ 
 class Entry {
 public:
 	string identifier;
 	double x;
 	double y;
 };
+*/
 
 /*
  * This is an "abstract class" ... it contains a list of the public methods of the class, but

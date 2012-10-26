@@ -9,7 +9,6 @@ using namespace std;
 class HW04App : public AppBasic {
   public:
 	void setup();
-	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
 };
@@ -21,7 +20,7 @@ void HW04App::setup()
 	double d2;
 	int entry = 0;
 
-	Entry* entriesArray = new Entry[7001];
+	Entry* entriesArray = new Entry[7000];
 
 	ifstream in(".../resources/Starbucks_2006.csv");
 	while(!(in.eof())) {
@@ -46,9 +45,6 @@ void HW04App::setup()
 	}
 }
 
-void HW04App::mouseDown( MouseEvent event )
-{
-}
 
 void HW04App::update()
 {
@@ -56,8 +52,7 @@ void HW04App::update()
 
 void HW04App::draw()
 {
-	// clear out the window with black
-	gl::clear( Color( 0, 0, 0 ) ); 
+
 }
 
 CINDER_APP_BASIC( HW04App, RendererGl )
