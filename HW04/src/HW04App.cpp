@@ -15,32 +15,24 @@ class HW04App : public AppBasic {
 
 void HW04App::setup()
 {
-	string ident;
-	double d1;
-	double d2;
 	int entry = 0;
 
-	Entry* entriesArray = new Entry[7000];
+	Entry* entriesArray = new Entry[7655];
 
-	ifstream in(".../resources/Starbucks_2006.csv");
+	ifstream in("../resources/Starbucks_2006.csv");
 	while(!(in.eof())) {
-		getline(in,ident,',');
-		entriesArray[entry].identifier = ident;
-
-		in >> d1;
-		entriesArray[entry].x = d1;
+		getline(in,entriesArray[entry].identifier,',');
+		in >> entriesArray[entry].x;
 
 		//Consume the comma that follws the first double
 		in.get();
-
-		in >> d2;
-		entriesArray[entry].y = d2;
+		
+		in >> entriesArray[entry].y;
 
 		//Consume the comma that follows the second double, before the next string
 		in.get();
 
 		entry++;
-
 
 	}
 }
