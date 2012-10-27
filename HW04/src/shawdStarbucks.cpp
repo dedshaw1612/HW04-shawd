@@ -19,7 +19,19 @@ using namespace std;
 
 	//virtual void 
 void shawdStarbucks::build(Entry* c, int n) {
+	for(int i = 0; i < n; i++) {
+		
+	}
+}
 
+void shawdStarbucks::initialize(int row,int col) {
+	this->grid = new Square[row*col];
+	for(int i = 0; i < row; i++) {
+		for(int j = 0;j < col; j++) {
+			this->grid[i*col + j]->key1 = j;
+			this->grid[i*col + j]->key2 = i;
+		}
+	}
 }
 
 	//virtual Entry* 

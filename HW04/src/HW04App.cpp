@@ -17,6 +17,8 @@ void HW04App::setup()
 {
 	int entry = 0;
 
+	shawdStarbucks Grid;
+
 	Entry* entriesArray = new Entry[7655];
 
 	ifstream in("../resources/Starbucks_2006.csv");
@@ -35,6 +37,7 @@ void HW04App::setup()
 		entry++;
 
 	}
+	Grid.build(entriesArray,entry-1);
 }
 
 
