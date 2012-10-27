@@ -36,20 +36,18 @@ int* computeHash(double d1, double d2) {
 
 	return hash;
 
-	
-
-
-
-
-
-
-
-
 }
 
+
 void shawdStarbucks::build(Entry* c, int n) {
+	int* hashKey = new int[2];
+	int numEntries;
 	for(int i = 0; i < n; i++) {
-		
+		hashKey = computeHash(c[i].x,c[i].y);
+		this->grid[hashKey[0]*(this->col) + hashKey[1]].add(c[i]);
+
+
+
 	}
 }
 
