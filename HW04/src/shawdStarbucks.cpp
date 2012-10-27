@@ -1,5 +1,6 @@
 #pragma once
 #include <shawdStarbucks.h>
+#include <math.h>
 
 using namespace std;
 
@@ -17,27 +18,58 @@ using namespace std;
 //class shawdStarbucks {// : public shawdStarbucks {
 //public:
 
-	//virtual void 
+void grow(Entry* arr,int sizeOf) {
+	Entry* temp = new Entry[2*sizeOf];
+	for(int i = 0;i<sizeOf;i++) {
+		temp[i] = arr[i];
+	}
+	arr = temp;
+	delete temp;
+
+}
+
+int* computeHash(double d1, double d2) {
+	int* hash = new int[2];
+
+	hash[0] = (int)(floor(10*d1));
+	hash[1] = (int)(floor(10*d1));
+
+	return hash;
+
+	
+
+
+
+
+
+
+
+
+}
+
 void shawdStarbucks::build(Entry* c, int n) {
 	for(int i = 0; i < n; i++) {
 		
 	}
 }
 
+
+
 void shawdStarbucks::initialize(int row,int col) {
 	this->grid = new Square[row*col];
 	for(int i = 0; i < row; i++) {
 		for(int j = 0;j < col; j++) {
-			this->grid[i*col + j]->key1 = j;
-			this->grid[i*col + j]->key2 = i;
+			this->grid[i*col + j].key1 = j;
+			this->grid[i*col + j].key2 = i;
 		}
 	}
 }
 
 	//virtual Entry* 
 Entry* shawdStarbucks::getNearest(double x, double y) {
-		Entry* test = new Entry();
-		return test;
+	int* find = computeHash(x,y);
+	Entry* test = new Entry();
+	return test;
 
 }
 
