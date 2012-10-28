@@ -4,30 +4,6 @@
 
 using namespace std;
 
-/*
- * Note that the origin is in the LOWER LEFT corner, unlike in previous assignments.
- */
-/*
- * This is an "abstract class" ... it contains a list of the public methods of the class, but
- *  they are all "pure virtual," which means they are not implemented anywhere in the code.
- *
- * An abstract class is used like an interface in Java: The only purpose of this class is to be the base
- *  class for your own data structure. You should make a .h and .cpp for you data structure ... in my
- *  case I made brinkmwjStarbucks.h and brinkmwjStarbucks.cpp, and my class was called "brinkmwjStarbucks"
- */
-//class shawdStarbucks {// : public shawdStarbucks {
-//public:
-
-void grow(Entry* arr,int sizeOf) {
-	Entry* temp = new Entry[2*sizeOf];
-	for(int i = 0;i<sizeOf;i++) {
-		temp[i] = arr[i];
-	}
-	arr = temp;
-	delete temp;
-
-}
-
 int* computeHash(double d1, double d2) {
 	int* hash = new int[2];
 
@@ -37,6 +13,19 @@ int* computeHash(double d1, double d2) {
 	return hash;
 
 }
+/*
+void grow(Entry* arr,int sizeOf) {
+	Entry* temp = new Entry[2*sizeOf];
+	for(int i = 0;i<sizeOf;i++) {
+		temp[i] = arr[i];
+	}
+	arr = temp;
+	delete temp;
+
+}
+*/
+
+
 
 
 void shawdStarbucks::build(Entry* c, int n) {
@@ -66,6 +55,24 @@ void shawdStarbucks::initialize(int row,int col) {
 	//virtual Entry* 
 Entry* shawdStarbucks::getNearest(double x, double y) {
 	int* find = computeHash(x,y);
+	Entry* candidate;
+	int candid = 0;
+	double distance = this->grid[find[0]*(this->col) + find[1]].computeDistance(0,x,y);
+	
+	for(int i = 1;i < this->grid[find[0]*(this->col) + find[1]].entries;i++)
+	{
+		if(this->grid[find[0]*(this->col) + find[1]].computeDistance(i,x,y) < distance)
+			candid = i;
+		
+	}
+
+	return &(this->grid[find[0]*(this->col) + find[1]].locations[candid]);
+	
+
+
+
+
+
 	Entry* test = new Entry();
 	return test;
 

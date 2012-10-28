@@ -15,6 +15,7 @@ class HW04App : public AppBasic {
 
 void HW04App::setup()
 {
+	int z;
 	int entry = 0;
 
 	shawdStarbucks Grid;
@@ -38,6 +39,10 @@ void HW04App::setup()
 
 	}
 	Grid.build(entriesArray,entry-1);
+	Entry* answer = Grid.getNearest(0.814946823,0.61897676);
+	cout << answer->identifier;
+	cin >> z;
+
 }
 
 
