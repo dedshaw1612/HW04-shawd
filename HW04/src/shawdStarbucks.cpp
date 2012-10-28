@@ -48,6 +48,10 @@ void shawdStarbucks::initialize(int row,int col) {
 		for(int j = 0;j < col; j++) {
 			this->grid[i*col + j].key1 = j;
 			this->grid[i*col + j].key2 = i;
+			this->grid[i*col + j].locations = new Entry[1];
+			this->grid[i*col + j].entries = 0;
+			this->grid[i*col + j].sizeOf = 1;
+
 		}
 	}
 }
@@ -68,10 +72,6 @@ Entry* shawdStarbucks::getNearest(double x, double y) {
 
 	return &(this->grid[find[0]*(this->col) + find[1]].locations[candid]);
 	
-
-
-
-
 
 	Entry* test = new Entry();
 	return test;
