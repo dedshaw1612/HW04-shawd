@@ -2,6 +2,7 @@
 #include <shawdStarbucks.h>
 #include <math.h>
 
+
 using namespace std;
 
 int* computeHash(double d1, double d2) {
@@ -13,19 +14,33 @@ int* computeHash(double d1, double d2) {
 	return hash;
 
 }
-/*
-void grow(Entry* arr,int sizeOf) {
-	Entry* temp = new Entry[2*sizeOf];
-	for(int i = 0;i<sizeOf;i++) {
-		temp[i] = arr[i];
+
+void Square::grow() {
+	Entry* temp = new Entry[2*this->sizeOf];
+	for(int i = 0;i<this->sizeOf;i++) {
+		temp[i] = this->locations[i];
 	}
-	arr = temp;
-	delete temp;
+	this->locations = temp;
+	this->sizeOf = 2 * sizeOf;
 
 }
-*/
 
+bool Square::isFull()
+{
+	return (this->entries >= this->sizeOf);
+}
 
+void Square::add(Entry c) {
+	if(this->isFull()) {
+		this->grow();
+	}
+	this->locations[this->entries] = c;
+	this->entries = this->entries + 1;
+}
+
+double Square::computeDistance(int loc, double d1, double d2) {
+	return sqrt(pow(abs(this->locations[loc].x - d1),2.0) + pow(abs(this->locations[loc].y - d2),2.0));
+}
 
 
 void shawdStarbucks::build(Entry* c, int n) {
@@ -43,6 +58,8 @@ void shawdStarbucks::build(Entry* c, int n) {
 
 
 void shawdStarbucks::initialize(int row,int col) {
+	this->col = col;
+
 	this->grid = new Square[row*col];
 	for(int i = 0; i < row; i++) {
 		for(int j = 0;j < col; j++) {
@@ -59,22 +76,28 @@ void shawdStarbucks::initialize(int row,int col) {
 	//virtual Entry* 
 Entry* shawdStarbucks::getNearest(double x, double y) {
 	int* find = computeHash(x,y);
-	Entry* candidate;
+	//Entry* candidate;
 	int candid = 0;
-	double distance = this->grid[find[0]*(this->col) + find[1]].computeDistance(0,x,y);
+	double distance = this->grid[find[0]*(this->col) + find[1]].computeDistance(candid,x,y);
 	
 	for(int i = 1;i < this->grid[find[0]*(this->col) + find[1]].entries;i++)
 	{
-		if(this->grid[find[0]*(this->col) + find[1]].computeDistance(i,x,y) < distance)
+		if(distance <= OFST) {
+			return &(this->grid[find[0]*(this->col) + find[1]].locations[candid]);
+		}
+
+		if(this->grid[find[0]*(this->col) + find[1]].computeDistance(i,x,y) < distance) {
 			candid = i;
+		}
+
+		if(i == 800)
+			int meow = 5;
+
 		
 	}
 
 	return &(this->grid[find[0]*(this->col) + find[1]].locations[candid]);
-	
 
-	Entry* test = new Entry();
-	return test;
 
 }
 
