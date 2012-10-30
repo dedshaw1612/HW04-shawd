@@ -38,11 +38,12 @@ void HW04App::setup()
 		entry++;
 
 	}
-	Grid.initialize(10,10);
+
 	Grid.build(entriesArray,entry-1);
 	
-	Entry* answer = Grid.getNearest(0.8,0.6);
+	Entry* answer = Grid.getNearest(0.741801952,0.79441292);
 	cout << answer->identifier;
+
 	cin >> z;
 
 }

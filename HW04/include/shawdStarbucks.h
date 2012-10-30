@@ -13,19 +13,19 @@ public:
 	int entries,sizeOf;
 	//hashkeys for x & y directions
 	int key1,key2;
-	//borders of each square, may or may not implement.
+	//borders of each square, made code for, but could not implement.
 	double top,bottom,left,right;
 	//grow function to adjust to the size of entries
 	void grow();
-	
+	//a method to checkBorders
+	int* checkBorders(Entry* c, double distance);
 	//a function used to compute the hashkey of given coordinates.
 	int* computeHash(double d1, double d2);
-
-	//a function to determine whether to grow
+	//a function to determine whether to grow a square
 	bool isFull();
-
+	//adds starbucks locations to a square
 	void add(Entry c);
-
+	//computes the distance between a location in a square, and given coordinates
 	double computeDistance(int loc, double d1, double d2);
 	
 
@@ -40,5 +40,6 @@ public:
 	int col;
 	//Number of squares across and up.
 	void initialize(int squareX, int squareY);
+	
 };
 
