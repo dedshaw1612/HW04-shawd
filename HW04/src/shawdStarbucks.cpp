@@ -1,5 +1,6 @@
 #pragma once
 #include <shawdStarbucks.h>
+#include "cinder/app/AppBasic.h"
 #include <math.h>
 
 
@@ -27,7 +28,8 @@ int* computeHash(double d1, double d2) {
 }
 
 void Square::grow() {
-	Entry* temp = new Entry[2*this->sizeOf];
+	Node* temp = new Node[2*this->sizeOf];
+	//Entry* temp = new Entry[2*this->sizeOf];
 	for(int i = 0;i<this->sizeOf;i++) {
 		temp[i] = this->locations[i];
 	}
@@ -42,7 +44,7 @@ bool Square::isFull()
 }
 
 
-void Square::add(Entry c) {
+void Square::add(Node c) {
 	if(this->isFull()) {
 		this->grow();
 	}
@@ -57,6 +59,22 @@ double Square::computeDistance(int loc, double d1, double d2) {
 
 void shawdStarbucks::build(Entry* c, int n) {
 	this->initialize(10,10);
+	this->locArray = new Node[n];
+	Node* nd = new Node[n];
+	for(int i = 0;i<n;i++) {
+		float f1 = (float)(c[i].x);
+		float f2 = (float)(c[i].y);
+		cinder::Vec2<float>* p = new cinder::Vec2<float>(f1,f2);
+		nd[i].center = p;
+		nd[i].identifier = c[i].identifier;
+		nd[i].pop_Next = 0;
+		nd[i].pop_Prev = 0;
+		nd[i].radius = 0;
+		nd[i].x = c[i].x;
+		nd[i].y = c[i].y;
+
+		this->locArray[i] = nd[i];
+	}
 
 	int numEntries = 1;
 	int* hashKey = new int[2];
@@ -64,12 +82,12 @@ void shawdStarbucks::build(Entry* c, int n) {
 		hashKey = computeHash(c[i].x,c[i].y);
 		
 		if(i==0)
-			this->grid[hashKey[0]*(this->col) + hashKey[1]].add(c[i]);
+			this->grid[hashKey[0]*(this->col) + hashKey[1]].add(nd[i]);
 		
 		//check if two entries are the same to avoid adding it more than once
 		if((abs(c[i].x - c[i-1].x) < OFST) && (abs(c[i].y - c[i-1].y) < OFST)) {
 		} else {
-			this->grid[hashKey[0]*(this->col) + hashKey[1]].add(c[i]);
+			this->grid[hashKey[0]*(this->col) + hashKey[1]].add(nd[i]);
 			numEntries++;
 		}
 			
@@ -120,7 +138,9 @@ int* Square::checkBorders(Entry* c, double distance) {
 	//i chose an int* so that if certain values were in indexs of borders, the corresponding borders would be checked.
 }
 
-
+double shawdStarbucks::computeDistance(int loc, double d1, double d2) {
+	return sqrt(pow(abs(this->locArray[loc].x - d1),2.0) + pow(abs(this->locArray[loc].y - d2),2.0));
+}
 void shawdStarbucks::initialize(int row,int col) {
 	this->col = col;
 	//as for now this only works with the current data set. Not saying that it wouldn't compile with new data,
@@ -131,7 +151,7 @@ void shawdStarbucks::initialize(int row,int col) {
 		for(int j = 0;j < col; j++) {
 			this->grid[i*col + j].key1 = j;
 			this->grid[i*col + j].key2 = i;
-			this->grid[i*col + j].locations = new Entry[1];
+			this->grid[i*col + j].locations = new Node[1];
 			this->grid[i*col + j].entries = 0;
 			this->grid[i*col + j].sizeOf = 1;
 
@@ -142,8 +162,6 @@ void shawdStarbucks::initialize(int row,int col) {
 			this->grid[i*col + j].left = j/10.0;
 			this->grid[i*col + j].right = (j+1.0)/10.0;
 			
-			
-			
 		}
 	}
 }
@@ -153,7 +171,6 @@ Entry* shawdStarbucks::getNearest(double x, double y) {
 	int* find = computeHash(x,y);
 	double* borders = new double[4];
 
-	
 	int candid = 0;
 	double distance = this->grid[find[0]*(this->col) + find[1]].computeDistance(candid,x,y);
 	
@@ -166,10 +183,7 @@ Entry* shawdStarbucks::getNearest(double x, double y) {
 		if(this->grid[find[0]*(this->col) + find[1]].computeDistance(i,x,y) < distance) {
 			candid = i;
 		}
-
-		
 	}
-
 	//this is where check borders would be called. I wasn't sure how to use getNearest recursivly, let alone if
 	//getNearest could have been used in this method without breaking the Starbucks.h contract.
 	return &(this->grid[find[0]*(this->col) + find[1]].locations[candid]);
@@ -177,3 +191,30 @@ Entry* shawdStarbucks::getNearest(double x, double y) {
 
 }
 
+void shawdStarbucks::getNearest(double x, double y, int population, bool pop) {
+	double* borders = new double[4];
+
+	int candid = 0;
+	double distance = this->computeDistance(candid,x,y);
+	
+	for(int i = 1;i < 7655;i++)
+	{
+		if(distance <= OFST) {
+			if(pop)
+				this->locArray[candid].pop_Prev += population;
+			else
+				this->locArray[candid].pop_Next += population;
+		}
+
+		if(this->computeDistance(i,x,y) < distance) {
+			candid = i; 
+		}
+	}
+
+	if(pop)
+		this->locArray[candid].pop_Prev += population;
+	else
+		this->locArray[candid].pop_Next += population;
+
+
+}
